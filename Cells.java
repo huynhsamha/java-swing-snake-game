@@ -15,7 +15,8 @@ public class Cells {
     private int x, y, type;
     private Image image;
     
-    protected static final int cell = 0, head = 1, body = 2, food = 3, star = 4, heart = 5, thunder = 6;
+    protected static final int cell = 0, head = 12, body1 = 1, body2 = 2, star = 3, thunder = 4;
+    protected static final int food = -1, traidau = 5, trainho = 6;
 
     public Cells(int x, int y, int type) {
         this.x = x; this.y = y; this.type = type;

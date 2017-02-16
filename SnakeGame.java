@@ -12,7 +12,6 @@ import javax.swing.SwingUtilities;
  * @author Huỳnh Sâm Hà @Stupid.Dog
  */
 public class SnakeGame {
-
     /**
      * @param args the command line arguments
      */

@@ -14,12 +14,10 @@ import java.util.ArrayList;
 public class Snake {
     protected static final int lengthDefault = 8, posHeadDefaultX = 8, posHeadDefaultY = 5;
     private final int dirDefault  = Direction.west;
-    protected static final int maxLifes = 5;
     
     private ArrayList<Integer> X, Y;
     private int direction; private boolean isOpen;
-    private static int lifes = 3;
-    private int timesEatThunder, countTimeSpeedThunder, defaultTimeThunder = 30;
+    protected static int timesEatThunder, countTimeSpeedThunder, defaultTimeThunder = 50, deltaSpeed= 30;
     
     public Snake() {
         direction = dirDefault;
@@ -45,12 +43,14 @@ public class Snake {
     
     protected int length() {return X.size();}
     protected int getDirection() {return direction;}
-    protected boolean isAlive() {return lifes > 0;}
     protected boolean isOpen() {return isOpen;}
     protected int getX(int i) {return X.get(i);}
     protected int getY(int i) {return Y.get(i);}
-    protected int getLifes() {return lifes;}
-    protected int getType(int i) {return (i == 0 ? Cells.head : Cells.body);}
+    protected int getType(int i) {
+        if (i == 0) return Cells.head;
+        if ((i+1)%4 == 0) return Cells.body1; 
+        return Cells.body2;
+    }
     
     protected void move() {
         for (int i=length()-1;i>0;i--) {
@@ -76,32 +76,29 @@ public class Snake {
         X.add(x); Y.add(y);
     }
 
-    protected void checkEatHeart(Things heart) {
-        int x = X.get(0), y = Y.get(0);
-        if (heart.empty() || x != heart.getX() || y != heart.getY()) return ;
-        heart.setAvailable(false);
-        lifes++; 
-    } 
-    
-    protected void checkEatStar(Things star) {
-        int x = X.get(0), y = Y.get(0);
-        if (star.empty() || x != star.getX() || y != star.getY()) return ;
-        star.setAvailable(false);
-    }
-    
-    protected void checkEatThunder(Things thunder) {
+    protected void checkEndThunder() {
         if (timesEatThunder == 0) return ;
         if (++countTimeSpeedThunder == defaultTimeThunder) {
-            Screen.speed /= 2;
+            Screen.speed -= deltaSpeed;
             timesEatThunder--;
             countTimeSpeedThunder = 0;
         }
-        
+    }
+    
+    protected void checkEatThunder(Things thunder) {
         int x = X.get(0), y = Y.get(0);
         if (thunder.empty() || x != thunder.getX() || y != thunder.getY()) return ;
         thunder.setAvailable(false);
+        Screen.speed += deltaSpeed;
         timesEatThunder++; 
-        Screen.speed *= 2;
+        Player.score += Player.scoreThunder;
+    }
+    
+    protected void checkEatStar(Things star) {
+        int x = X.get(0), y = Y.get(0);
+        if (x != star.getX() || y != star.getY()) return ;
+        star.setAvailable(false);
+        Player.score += Player.scoreStar;
     }
     
     protected void checkEatBody() {
@@ -117,12 +114,12 @@ public class Snake {
         }
     }
     
-    protected boolean checkDied() {
+    protected boolean isAlive() {
+        if (length() < lengthDefault) return false;
         int headX = X.get(0), headY = Y.get(0);
-        if (headX < 0 || headX >= Screen.szWidth || headY < 0 || headY >= Screen.szHeight) {
-            this.lifes--; 
-            return true;
+        if (headX < 0 || headX >= Screen.widthSize || headY < 0 || headY >= Screen.heightSize) {
+            return false;
         }
-        return false;
+        return true;
     }
 }

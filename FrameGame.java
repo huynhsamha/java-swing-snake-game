@@ -5,19 +5,15 @@
  */
 package snakegame;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import javax.swing.JFrame;
+import java.awt.*;
+import javax.swing.*;
 
 /**
  *
  * @author Huỳnh Sâm Hà @Stupid.Dog
  */
 public class FrameGame extends JFrame {
-    private final int WIDTH_FRAME = 1000, HEIGHT_FRAME = 600;
-    private final Screen screen = new Screen();
+    protected static final int WIDTH_FRAME = 1000, HEIGHT_FRAME = 650;
     
     public FrameGame() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -25,11 +21,11 @@ public class FrameGame extends JFrame {
         setResizable(false);
         setTitle("My Snake Game");
         
-        add(screen);
+        Images.loadImages();
+        add(new Screen());
         
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
     }
-    
 }

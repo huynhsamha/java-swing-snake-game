@@ -10,5 +10,11 @@ package snakegame;
  * @author Huỳnh Sâm Hà @Stupid.Dog
  */
 public class Player {
-    protected static int lenNow = Snake.lengthDefault, lenMax = lenNow, coin = 500;
+    protected static final long scoreStar = 50, scoreThunder = 10;
+    protected static long score = 0, length = Snake.lengthDefault;
+    protected static void update() {
+        long curLength = Screen.snake.length();
+        score += curLength-length;
+        length = curLength;
+    }
 }
